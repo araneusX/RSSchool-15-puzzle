@@ -199,7 +199,7 @@ const onSizeClick = (event) => {
 
 sizes.addEventListener('click', onSizeClick);
 start.addEventListener('click', () => {
-  createField();
+  currentFieldArr = createField();
   timer.restart();
   counter.clear();
   lock.classList.remove('active');
@@ -208,6 +208,7 @@ start.addEventListener('click', () => {
 save.addEventListener('click', () => {
   localStorage.gemPuzzleSave = JSON.stringify(currentFieldArr);
   localStorage.gemPuzzleTime = JSON.stringify(timer.getTotal());
+  localStorage.gemPuzzleScore = JSON.stringify(counter.value);
 });
 
 returnSave.addEventListener('click', () => {
@@ -223,6 +224,7 @@ returnSave.addEventListener('click', () => {
     clearField();
     fillField(currentFieldArr);
     timer.restart(JSON.parse(localStorage.gemPuzzleTime));
+    counter.set(JSON.parse(localStorage.gemPuzzleScore));
   }
 });
 
