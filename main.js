@@ -199,7 +199,7 @@ const onSizeClick = (event) => {
 
 sizes.addEventListener('click', onSizeClick);
 start.addEventListener('click', () => {
-  createField();
+  currentFieldArr = createField();
   timer.restart();
   counter.clear();
   lock.classList.remove('active');
