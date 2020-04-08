@@ -309,6 +309,8 @@ document.addEventListener('win', () => {
     message.classList.remove('visible');
     lock.classList.add('active');
   });
+
+  list.classList.remove('empty');
 });
 
 if (bestResult.length === 0) {
