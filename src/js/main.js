@@ -267,18 +267,27 @@ document.addEventListener('win', () => {
   totalScore.innerText = resultScore;
   totalTime.innerText = timeFormatter(resultTime);
   message.classList.add('visible');
+
   const newBestResult = [];
   let isSaved = false;
-  for (let i = 0; i < bestResult.length; i += 1) {
-    if (!isSaved
-      && (bestResult[i].bestScore > resultScore || bestResult[i].bestTime > resultTime)) {
-      newBestResult.push({
-        bestScore: resultScore,
-        bestTime: resultTime,
-      });
-      isSaved = true;
+
+  if (bestResult.length === 0) {
+    newBestResult.push({
+      bestScore: resultScore,
+      bestTime: resultTime,
+    });
+  } else {
+    for (let i = 0; i < bestResult.length; i += 1) {
+      if (!isSaved
+        && (bestResult[i].bestScore > resultScore || bestResult[i].bestTime > resultTime)) {
+        newBestResult.push({
+          bestScore: resultScore,
+          bestTime: resultTime,
+        });
+        isSaved = true;
+      }
+      newBestResult.push(bestResult[i]);
     }
-    newBestResult.push(bestResult[i]);
   }
 
   bestResult = newBestResult;
