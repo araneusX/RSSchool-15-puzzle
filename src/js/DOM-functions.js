@@ -30,7 +30,7 @@ export const doIfWin = () => {
 
   winButton.addEventListener('click', () => {
     counter.clear();
-    timer.restart();
+    timer.clear();
     message.classList.remove('visible');
     lock.classList.add('on');
     pause.classList.remove('active');
