@@ -1,10 +1,11 @@
 import { FIELD_SIZE } from './constants';
 import Position from './position';
 import createItem from './createItem';
+import { createHTMLElement } from './utils';
 import {
   start,
   pause,
-  // result,
+  result,
   save,
   returnSave,
   progress,
@@ -14,6 +15,9 @@ import {
   lock,
   message,
   ok,
+  best,
+  list,
+  bestButton,
 } from './body';
 
 let currentFieldSize = FIELD_SIZE;
@@ -188,7 +192,7 @@ const onSizeClick = (event) => {
       timer.stop();
       timer = new Timer(time);
       counter.clear();
-      lock.classList.remove('active');
+      lock.classList.add('active');
       currentFieldArr = createField(newSize, false);
       clearSize();
       event.target.classList.add('selected');
@@ -236,17 +240,83 @@ pause.addEventListener('click', () => {
   }
 });
 
+
+let bestResult = [];
+for (let i = 0; i < 10; i += 1) {
+  if (localStorage.getItem(`gemPuzzleBestScore${i}`)) {
+    const bestScore = parseInt(localStorage.getItem(`gemPuzzleBestScore${i}`), 10);
+    const bestTime = parseInt(localStorage.getItem(`gemPuzzleBestTime${i}`), 10);
+    const item = createHTMLElement('li');
+    item.innerText = `${i + 1}-е место: ${bestScore} ходов за время: ${timeFormatter(bestTime)}.`;
+    bestResult.push({
+      bestScore,
+      bestTime,
+    });
+    list.appendChild(item);
+  }
+}
+
 document.addEventListener('win', () => {
   timer.stop();
   const totalScore = document.getElementById('js-count');
   const totalTime = document.getElementById('js-time');
-  totalScore.innerText = counter.value;
-  totalTime.innerText = timeFormatter(timer.getTotal());
+
+  const resultScore = counter.value;
+  const resultTime = timer.getTotal();
+
+  totalScore.innerText = resultScore;
+  totalTime.innerText = timeFormatter(resultTime);
   message.classList.add('visible');
+  const newBestResult = [];
+  let isSaved = false;
+  for (let i = 0; i < bestResult.length; i += 1) {
+    if (!isSaved
+      && (bestResult[i].bestScore > resultScore || bestResult[i].bestTime > resultTime)) {
+      newBestResult.push({
+        bestScore: resultScore,
+        bestTime: resultTime,
+      });
+      isSaved = true;
+    }
+    newBestResult.push(bestResult[i]);
+  }
+
+  bestResult = newBestResult;
+  while (list.firstChild) {
+    list.removeChild(list.firstChild);
+  }
+
+  for (let i = 0; i < bestResult.length && i < 10; i += 1) {
+    localStorage.setItem(`gemPuzzleBestScore${i}`, `${bestResult[i].bestScore}`);
+    localStorage.setItem(`gemPuzzleBestTime${i}`, `${bestResult[i].bestTime}`);
+    const item = createHTMLElement('li');
+    item.innerText = `${i + 1}-е место: ${bestResult[i].bestScore} ходов за время: ${timeFormatter(bestResult[i].bestTime)}.`;
+    list.appendChild(item);
+  }
+
   ok.addEventListener('click', () => {
     counter.clear();
     timer = new Timer(time);
     message.classList.remove('visible');
     lock.classList.add('active');
+  });
+});
+
+if (bestResult.length === 0) {
+  list.classList.add('empty');
+}
+
+result.addEventListener('click', () => {
+  let timerStop = false;
+  if (timer.isStarted) {
+    timer.stop();
+    timerStop = true;
+  }
+  best.classList.add('visible');
+  bestButton.addEventListener('click', () => {
+    best.classList.remove('visible');
+    if (timerStop) {
+      timer.start();
+    }
   });
 });

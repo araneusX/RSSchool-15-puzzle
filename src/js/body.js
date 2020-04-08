@@ -52,12 +52,25 @@ const ok = createButton('OK');
 message.appendChild(text);
 message.appendChild(ok);
 
+const best = createHTMLElement('div', 'best');
+const bestPlace = createHTMLElement('div', 'best__place');
+const title = createHTMLElement('h4', 'best__title');
+const list = createHTMLElement('ul', 'best__list');
+title.innerText = 'Рекорды';
+const bestButton = createButton('OK');
+bestPlace.appendChild(title);
+bestPlace.appendChild(list);
+bestPlace.appendChild(bestButton);
+best.appendChild(bestPlace);
+
 document.body.appendChild(controlls);
 document.body.appendChild(score);
 document.body.appendChild(field);
 document.body.appendChild(sizes);
 document.body.appendChild(lock);
 document.body.appendChild(message);
+document.body.appendChild(best);
+
 
 export {
   start,
@@ -72,4 +85,7 @@ export {
   lock,
   message,
   ok,
+  best,
+  list,
+  bestButton,
 };
