@@ -1,10 +1,46 @@
-import { createHTMLElement } from './utils';
-import checkWin from './checkWin';
 import Position from './position';
-import searchEmpty from './searchEmpty';
+import { timer } from './timer';
+import { counter } from './counter';
+import {
+  timeFormatter, fillResultList, getSavedResults, getNewResult,
+  saveResult, createHTMLElement, searchEmpty, checkWin,
+} from './utils';
+import {
+  pause, save, lock, message,
+  winButton, list, field,
+} from './body';
 
+export const doIfWin = () => {
+  const totalScore = document.getElementById('js-count');
+  const totalTime = document.getElementById('js-time');
 
-const createItem = (name, size, position, fieldArr, counter) => {
+  let bestResult = getSavedResults();
+
+  timer.stop();
+  const resultScore = counter.value;
+  const resultTime = timer.getTotal();
+
+  totalScore.innerText = resultScore;
+  totalTime.innerText = timeFormatter(resultTime);
+  message.classList.add('visible');
+
+  bestResult = getNewResult(bestResult, resultScore, resultTime);
+  saveResult(bestResult);
+  fillResultList(list, bestResult);
+
+  winButton.addEventListener('click', () => {
+    counter.clear();
+    timer.restart();
+    message.classList.remove('visible');
+    lock.classList.add('on');
+    pause.classList.remove('active');
+    save.classList.remove('active');
+  }, { once: true });
+
+  list.classList.remove('empty');
+};
+
+const createItem = (name, size, position, fieldArr) => {
   const fieldLink = fieldArr;
   let itemPosition = position;
 
@@ -45,7 +81,7 @@ const createItem = (name, size, position, fieldArr, counter) => {
           itemPosition = newPosition;
           fieldLink[itemPosition.y][itemPosition.x] = name;
           counter.next();
-          checkWin(fieldLink);
+          checkWin(fieldLink, doIfWin);
         }
 
         itemHTMLElement.style.top = `${size * itemPosition.y}%`;
@@ -94,4 +130,15 @@ const createItem = (name, size, position, fieldArr, counter) => {
   return itemHTMLElement;
 };
 
-export default createItem;
+export const fillField = (fieldArr) => {
+  const itemSize = 100 / fieldArr.length;
+  for (let i = 0; i < fieldArr.length; i += 1) {
+    for (let j = 0; j < fieldArr.length; j += 1) {
+      const name = fieldArr[i][j];
+      const position = new Position(j, i);
+      if (name !== 0) {
+        field.appendChild(createItem(name, itemSize, position, fieldArr));
+      }
+    }
+  }
+};

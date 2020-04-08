@@ -7,15 +7,15 @@ const [
   pause,
   result,
   save,
-  returnSave,
+  loadSave,
 ] = [
-  'Размешать и начать',
-  'Пауза / Продолжить',
-  'Результаты',
-  'Сохранить',
-  'Вернуться к сохраненной игре',
-].map((name) => {
-  const button = createButton(name);
+  ['Размешать и начать', 'start'],
+  ['Пауза / Продолжить', 'pause'],
+  ['Результаты', 'result'],
+  ['Сохранить', 'save'],
+  ['Вернуться к сохраненной игре', 'loadSave'],
+].map((data) => {
+  const button = createButton(...data);
   controlls.appendChild(button);
   return button;
 });
@@ -41,16 +41,16 @@ const sizes = createHTMLElement('div', 'sizes');
   sizes.appendChild(toggle);
 });
 
-const lock = createHTMLElement('div', 'lock', 'active');
+const lock = createHTMLElement('div', 'lock', 'on');
 
 const message = createHTMLElement('div', 'message');
 const text = createHTMLElement('p', 'text');
 text.innerHTML = `
 Ура! Вы решили головоломку за <span id="js-time"></span> и <span id="js-count"></span> ходов!
 `;
-const ok = createButton('OK');
+const winButton = createButton('OK');
 message.appendChild(text);
-message.appendChild(ok);
+message.appendChild(winButton);
 
 const best = createHTMLElement('div', 'best');
 const bestPlace = createHTMLElement('div', 'best__place');
@@ -77,14 +77,14 @@ export {
   pause,
   result,
   save,
-  returnSave,
+  loadSave,
   progress,
   time,
   field,
   sizes,
   lock,
   message,
-  ok,
+  winButton,
   best,
   list,
   bestButton,
