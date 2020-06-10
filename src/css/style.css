@@ -1,0 +1,162 @@
+@import "~normalize.css";
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+button {
+  margin: 10px;
+  border-radius: 5px;
+  overflow: hidden;
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.5);
+  border: 1px solid black;
+  transition: color 0.1s linear;
+  text-transform: uppercase;
+  background-color: transparent;
+  outline: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+button:hover {
+  background-color: rgba(48, 0, 54, 0.151)
+}
+
+.controlls {
+  display: flex;
+  justify-content: space-around;
+  padding: 0 20px;
+}
+
+.score {
+  display: flex;
+  justify-content: center;
+}
+
+.score {
+  margin: 20px;
+}
+
+.progress::before {
+  content: 'Ходов:';
+  margin-right: 5px;
+}
+
+.progress {
+  padding: 0 10px;
+}
+
+.time::before {
+  content: 'Время:';
+  margin-right: 5px;
+}
+
+.time {
+  padding: 0 10px;
+}
+
+.field {
+  width: 30vw;
+  height: 30vw;
+  background-color: rgb(255, 255, 255);
+  box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.25), 0px 0px 3px 0px rgba(0, 0, 0, 0.25) inset;
+  position: relative;
+}
+
+.item {
+  background-color: rgb(255, 255, 255);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 35px;
+  color: rgb(143, 0, 0);
+  box-shadow: 0px 0px 0px 2px rgb(255, 255, 255) inset, 0px 0px 3px 4px rgba(0, 0, 0, 0.5) inset;
+  position: absolute;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.smooth {
+  transition: 0.1s ease-out; 
+}
+
+.item:hover {
+  background-color: rgba(9, 255, 0, 0.164);
+}
+
+.sizes {
+  display: flex;
+  justify-content: center;
+  margin: 20px 0;
+  z-index: 20;
+}
+
+.selected {
+  box-shadow: 0px 0px 3px 1px rgba(0, 0, 0, 0.5) inset;
+  background-color: rgba(255, 174, 0, 0.692);
+}
+
+.selected:hover {
+  background-color: rgba(255, 30, 0, 0.692);
+}
+
+.lock {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  display: none;
+}
+
+.lock.active {
+  display: block;
+}
+
+.controlls>button:nth-child(2n-1) {
+  z-index: 20;
+}
+
+.message {
+  position: fixed;
+  top: 0%;
+  left: 0%;
+  height: 100%;
+  width: 100%;
+  z-index: 10;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  background-color: rgba(129, 129, 129, 0.548);
+  z-index: 30;
+  display: none;
+}
+
+.message>button {
+  z-index: 50;
+  position: relative;
+  top: -30px;
+}
+
+.text {
+  padding: 20px 20px 70px;
+  position: relative;
+  top: 40px;
+  background-color: rgb(255, 255, 255);
+  z-index: 40;
+  box-shadow: 0px 0px 3px 2px rgba(0, 0, 0, 0.25), 0px 0px 3px 0px rgba(0, 0, 0, 0.25) inset;
+  border-radius: 5px;
+}
+
+.message.visible {
+  display: flex;
+}
